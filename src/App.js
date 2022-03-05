@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react'
 import './App.css'
 
 import axios from 'axios'
+import Coin from './Coin'
 
 const URL =
   'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false'
 
 export default function App() {
   const [coins, setCoins] = useState([])
+  const [search, setSearch] = useState()
 
   useEffect(() => {
     axios
@@ -17,14 +19,14 @@ export default function App() {
         console.log(res.data)
       })
       .catch(error => console.log(error))
-
-    // fetch(URL)
-    //   .then(res => res.json())
-    //   .then(data => {
-    //     setCoins(data)
-    //     console.log(data)
-    //   })
   }, [])
+
+  function handleChange(e) {
+    setSearch(e.target.value)
+  }
+  const filteredCoins = coins.filter(coin =>
+    coin.name.toLowerCase().includes(search.toLowerCase())
+  )
 
   return (
     <div className='coin-app'>
@@ -35,8 +37,14 @@ export default function App() {
             className='coint-input'
             type='text'
             placeholder='Search'
+            onChange={e => handleChange(e)}
           ></input>
         </form>
+        <div>
+          {filteredCoins.map(coin => {
+            return <Coin key={coin.id} coin={coin} />
+          })}
+        </div>
       </div>
     </div>
   )

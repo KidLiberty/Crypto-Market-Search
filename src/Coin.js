@@ -1,6 +1,7 @@
 import React from 'react'
 
-export const Coin = () => {
+export const Coin = ({ coin }) => {
+  const { image, name, symbol, price, volume } = coin
   return (
     <div className='coin-container'>
       <div className='coin-row'>

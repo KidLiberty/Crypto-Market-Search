@@ -1,25 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react'
+import './App.css'
 
-function App() {
+import axios from 'axios'
+
+const URL =
+  'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false'
+
+export default function App() {
+  const [coins, setCoins] = useState([])
+
+  useEffect(() => {
+    axios
+      .get(URL)
+      .then(res => {
+        setCoins(res.data)
+        console.log(res.data)
+      })
+      .catch(error => console.log(error))
+
+    // fetch(URL)
+    //   .then(res => res.json())
+    //   .then(data => {
+    //     setCoins(data)
+    //     console.log(data)
+    //   })
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='coin-app'>
+      <div className='coin-search'>
+        <h1 className='coin-text'>Search a currency</h1>
+        <form>
+          <input
+            className='coint-input'
+            type='text'
+            placeholder='Search'
+          ></input>
+        </form>
+      </div>
     </div>
-  );
+  )
 }
-
-export default App;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import './App.css'
 
 import Coin from './Coin'
@@ -13,33 +13,32 @@ export default function App() {
   useEffect(() => {
     fetch(URL)
       .then(res => res.json())
-      .then(data => {
-        setCoins(data)
-        console.log(data)
-      })
-      .catch(err => console.log(err))
+      .then(data => setCoins(data))
   }, [])
 
   function handleChange(e) {
     setSearch(e.target.value)
   }
 
-  const filteredCoins = coins.filter(coin =>
-    coin.name.toLowerCase().includes(search.toLowerCase())
+  const filteredCoins = useMemo(
+    () =>
+      coins.filter(coin =>
+        coin.name.toLowerCase().includes(search.toLowerCase())
+      ),
+    [coins, search]
   )
 
   return (
     <div className='coin-app'>
       <div className='coin-search'>
         <h1 className='coin-text'>Search a Currency</h1>
-        <form>
-          <input
-            className='coin-input'
-            type='text'
-            placeholder='Search'
-            onChange={e => handleChange(e)}
-          />
-        </form>
+        <input
+          className='coin-input'
+          type='text'
+          placeholder='Search'
+          value={search}
+          onChange={e => handleChange(e)}
+        />
         <div className='coin-list'>
           {filteredCoins.map(coin => {
             return <Coin key={coin.id} coin={coin} />

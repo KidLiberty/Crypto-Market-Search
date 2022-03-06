@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import './App.css'
-import axios from 'axios'
 
 import Coin from './Coin'
 
@@ -12,13 +11,13 @@ export default function App() {
   const [search, setSearch] = useState('')
 
   useEffect(() => {
-    axios
-      .get(URL)
-      .then(res => {
-        setCoins(res.data)
-        console.log(res.data)
+    fetch(URL)
+      .then(res => res.json())
+      .then(data => {
+        setCoins(data)
+        console.log(data)
       })
-      .catch(error => console.log(error))
+      .catch(err => console.log(err))
   }, [])
 
   function handleChange(e) {
@@ -32,7 +31,7 @@ export default function App() {
   return (
     <div className='coin-app'>
       <div className='coin-search'>
-        <h1 className='coin-text'>Search a currency</h1>
+        <h1 className='coin-text'>Search a Currency</h1>
         <form>
           <input
             className='coin-input'

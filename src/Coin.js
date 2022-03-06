@@ -2,7 +2,7 @@ import React from 'react'
 
 import './Coin.css'
 
-export const Coin = ({ coin }) => {
+export default function Coin({ coin }) {
   const {
     name,
     image,
@@ -12,6 +12,7 @@ export const Coin = ({ coin }) => {
     price_change_percentage_24h,
     total_volume
   } = coin
+
   return (
     <div className='coin-container'>
       <div className='coin-row'>
@@ -24,9 +25,13 @@ export const Coin = ({ coin }) => {
           <p className='coin-price'>${current_price}</p>
           <p className='coin-volume'>${market_cap.toLocaleString()}</p>
           {price_change_percentage_24h < 0 ? (
-            <p className='coin-percent red'>{price_change_percentage_24h}%</p>
+            <p className='coin-percent red'>
+              {price_change_percentage_24h.toFixed(2)}%
+            </p>
           ) : (
-            <p className='coin-percent green'>{price_change_percentage_24h}%</p>
+            <p className='coin-percent green'>
+              {price_change_percentage_24h.toFixed(2)}%
+            </p>
           )}
           <p className='coin-market-cap'>
             Mkt Cap: {total_volume.toLocaleString()}
@@ -36,5 +41,3 @@ export const Coin = ({ coin }) => {
     </div>
   )
 }
-
-export default Coin
